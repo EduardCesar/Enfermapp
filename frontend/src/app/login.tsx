@@ -57,6 +57,8 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.form}>
+
+      <Text style={styles.title}>Sign in</Text>
         
         {/* SELETOR DE TIPO DE CONTA */}
         <Text style={styles.label}>Selecione o Tipo de Conta</Text>
@@ -118,19 +120,20 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  title: { textAlign: 'center', fontSize: 30, fontWeight: 'bold',},
   container: { flex: 1, backgroundColor: '#fff' },
   form: { flex: 1, paddingHorizontal: 30, justifyContent: 'center' },
-  label: { fontSize: 18, color: '#000', marginBottom: 5, marginTop: 20 },
-  input: { backgroundColor: '#8b8682', height: 60, paddingHorizontal: 15, fontSize: 16, color: '#000' },
-  passwordContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#8b8682', height: 60 },
-  inputSenha: { flex: 1, height: 60, paddingHorizontal: 15, fontSize: 16, color: '#000' },
+  label: { fontSize: 18, color: '#000', marginBottom: 5, marginTop: 20, },
+  input: { backgroundColor: '#fff', height: 60, paddingHorizontal: 15, fontSize: 16, color: '#000', borderRadius: 50, borderWidth: 2 },
+  passwordContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', height: 60, borderRadius: 50, borderWidth: 2 },
+  inputSenha: { flex: 1, height: 60, paddingHorizontal: 15, fontSize: 16, color: '#000', borderRadius: 50 },
   eyeButton: { paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center' },
-  dropdownHeader: { backgroundColor: '#8b8682', height: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 15 },
+  dropdownHeader: { backgroundColor: '#fff', height: 50, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 15, borderRadius: 50, borderWidth: 2 },
   inputText: { fontSize: 16, color: '#000' },
   arrow: { fontSize: 20, fontWeight: 'bold' },
-  dropdownOptions: { backgroundColor: '#8b8682', marginTop: 1, zIndex: 10 },
-  option: { padding: 15, borderBottomWidth: 0.5, borderBottomColor: '#7a7571' },
+  dropdownOptions: { backgroundColor: '#fff', marginTop: 1, zIndex: 10, borderRadius: 50, },
+  option: { padding: 15, borderBottomWidth: 3, borderBottomColor: 'black', borderRadius: 50,   },
   optionText: { fontSize: 16, color: '#000' },
-  loginButton: { backgroundColor: '#cc0000', width: 150, height: 70, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', marginTop: 50 },
+  loginButton: { backgroundColor: '#cc0000', width: 150, height: 70, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', marginTop: 50, borderRadius: 50 },
   loginButtonText: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
 });
