@@ -14,6 +14,21 @@ import {
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
+// ─── PALETA PETRÓLEO + OLIVA ──────────────────────────────────────────────────
+const PETROLEO      = '#1B4D4D';
+const PETROLEO_VIVO = '#2A7A7A';
+const PETROLEO_BG   = '#E0EBEB';
+const OLIVA         = '#5C6B2E';
+const OLIVA_VIVA    = '#7A8F3A';
+const OLIVA_BG      = '#ECF0DC';
+const CREAM         = '#F7F5F0';
+const WHITE         = '#FFFFFF';
+const TEXT_DARK     = '#1A1A1A';
+const TEXT_MID      = '#6B6B6B';
+const BORDER        = '#E0DDD6';
+const ALERTA        = '#C45B4A';
+// ───────────────────────────────────────────────────────────────────────────────
+
 export default function CadastroPasso2() {
   const router = useRouter();
   const { tipo_conta } = useLocalSearchParams();
@@ -22,11 +37,11 @@ export default function CadastroPasso2() {
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [focusedField, setFocusedField] = useState(null);
   const [pulseAnim] = useState(new Animated.Value(1));
 
   const stepCount = tipo_conta === 'profissional' ? '5' : '3';
-  const progress = 40; // 40% - passo 2 de 5 ou 3
+  const progress = 40;
 
   const animateButton = () => {
     Animated.sequence([
@@ -56,12 +71,12 @@ export default function CadastroPasso2() {
     });
   };
 
-  // Força de senha visual
-  const getPasswordStrength = (pwd: string) => {
-    if (pwd.length === 0) return { strength: 0, color: '#e0e0e0', text: '' };
-    if (pwd.length < 6) return { strength: 25, color: '#ff5252', text: 'Fraca' };
-    if (pwd.length < 10) return { strength: 50, color: '#ffab40', text: 'Média' };
-    return { strength: 100, color: '#69f0ae', text: 'Forte' };
+  // Força de senha visual — paleta petróleo+oliva
+  const getPasswordStrength = (pwd) => {
+    if (pwd.length === 0) return { strength: 0, color: BORDER, text: '' };
+    if (pwd.length < 6) return { strength: 25, color: ALERTA, text: 'Fraca' };
+    if (pwd.length < 10) return { strength: 50, color: OLIVA_VIVA, text: 'Média' };
+    return { strength: 100, color: PETROLEO_VIVO, text: 'Forte' };
   };
 
   const pwdStrength = getPasswordStrength(senha);
@@ -114,7 +129,7 @@ export default function CadastroPasso2() {
                   <TextInput
                     style={styles.input}
                     placeholder="Ex: maria_silva"
-                    placeholderTextColor="#9e9e9e"
+                    placeholderTextColor="#ABABAB"
                     value={nome}
                     onChangeText={setNome}
                     onFocus={() => setFocusedField('nome')}
@@ -138,7 +153,7 @@ export default function CadastroPasso2() {
                   <TextInput
                     style={[styles.input, styles.passwordInput]}
                     placeholder="Mínimo 6 caracteres"
-                    placeholderTextColor="#9e9e9e"
+                    placeholderTextColor="#ABABAB"
                     value={senha}
                     onChangeText={setSenha}
                     onFocus={() => setFocusedField('senha')}
@@ -185,7 +200,7 @@ export default function CadastroPasso2() {
                   <TextInput
                     style={styles.input}
                     placeholder="Repita a senha"
-                    placeholderTextColor="#9e9e9e"
+                    placeholderTextColor="#ABABAB"
                     value={confirmarSenha}
                     onChangeText={setConfirmarSenha}
                     onFocus={() => setFocusedField('confirmar')}
@@ -238,17 +253,17 @@ export default function CadastroPasso2() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f5', // Lavender Blush
+    backgroundColor: CREAM,
   },
   
   // Progress bar
   progressBarContainer: {
-    height: 3,
-    backgroundColor: '#fce4ec',
+    height: 4,
+    backgroundColor: BORDER,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#e91e63', // Pink 500
+    backgroundColor: PETROLEO,
   },
 
   keyboardView: {
@@ -273,7 +288,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: 48,
     fontWeight: '200',
-    color: '#e91e63',
+    color: PETROLEO,
     letterSpacing: -2,
   },
   stepDivider: {
@@ -283,21 +298,22 @@ const styles = StyleSheet.create({
   },
   stepDividerText: {
     fontSize: 24,
-    color: '#ad1457',
+    color: TEXT_MID,
     fontWeight: '300',
   },
   stepTotal: {
     fontSize: 20,
-    color: '#c2185b',
+    color: TEXT_MID,
     fontWeight: '400',
     marginLeft: 2,
   },
   stepLabel: {
-    fontSize: 14,
-    color: '#880e4f',
+    fontSize: 13,
+    color: OLIVA,
     marginLeft: 'auto',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
+    fontWeight: '600',
   },
 
   // Title
@@ -307,13 +323,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
     letterSpacing: -0.5,
   },
   titleAccent: {
     fontSize: 28,
     fontWeight: '300',
-    color: '#e91e63',
+    color: PETROLEO_VIVO,
     letterSpacing: -0.5,
   },
 
@@ -326,7 +342,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 14,
-    color: '#880e4f',
+    color: OLIVA,
     fontWeight: '600',
     marginBottom: 8,
     textTransform: 'uppercase',
@@ -335,28 +351,31 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
+    backgroundColor: WHITE,
+    borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: '#f8bbd0',
+    borderColor: BORDER,
     paddingHorizontal: 16,
     height: 56,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.07,
     shadowRadius: 8,
     elevation: 3,
   },
   inputFocused: {
-    borderColor: '#e91e63',
-    shadowColor: '#e91e63',
+    borderColor: PETROLEO,
+    borderWidth: 2,
+    shadowColor: PETROLEO,
     shadowOpacity: 0.12,
   },
   inputFilled: {
-    borderColor: '#c2185b',
+    borderColor: OLIVA,
+    borderWidth: 2,
   },
   inputMatch: {
-    borderColor: '#69f0ae',
+    borderColor: PETROLEO_VIVO,
+    borderWidth: 2,
   },
   inputIcon: {
     fontSize: 20,
@@ -366,7 +385,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#4a148c',
+    color: TEXT_DARK,
     fontWeight: '500',
   },
   passwordInput: {
@@ -390,7 +409,7 @@ const styles = StyleSheet.create({
   strengthBarBg: {
     flex: 1,
     height: 4,
-    backgroundColor: '#fce4ec',
+    backgroundColor: BORDER,
     borderRadius: 2,
     overflow: 'hidden',
   },
@@ -408,12 +427,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#69f0ae',
+    backgroundColor: PETROLEO,
     justifyContent: 'center',
     alignItems: 'center',
   },
   matchText: {
-    color: '#fff',
+    color: WHITE,
     fontSize: 14,
     fontWeight: '700',
   },
@@ -424,34 +443,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButton: {
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     paddingHorizontal: 48,
-    borderRadius: 16,
-    shadowColor: '#e91e63',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
+    borderRadius: 14,
+    shadowColor: PETROLEO,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
     elevation: 8,
     minWidth: 240,
   },
   nextButtonDisabled: {
-    backgroundColor: '#f8bbd0',
+    backgroundColor: BORDER,
     shadowOpacity: 0,
     elevation: 0,
   },
   nextButtonText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   arrowRight: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 18,
     marginLeft: 8,
   },
@@ -461,10 +480,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#f8bbd0',
+    borderColor: BORDER,
   },
   backText: {
-    color: '#ad1457',
+    color: PETROLEO_VIVO,
     fontSize: 14,
     fontWeight: '500',
   },

@@ -130,7 +130,10 @@ export default function CadastroScreen() {
                   ]} 
                   onPress={() => selectOption(item.label)}
                 >
-                  <View style={styles.optionIcon}>
+                  <View style={[
+                    styles.optionIcon,
+                    tipo === item.label && styles.optionIconSelected
+                  ]}>
                     <Text style={styles.optionIconText}>{item.icon}</Text>
                   </View>
                   <View style={styles.optionTextContainer}>
@@ -165,10 +168,16 @@ export default function CadastroScreen() {
               onPress={handleNext}
               disabled={!tipo}
             >
-              <Text style={styles.nextButtonText}>
+              <Text style={[
+                styles.nextButtonText,
+                !tipo && styles.nextButtonTextDisabled
+              ]}>
                 Continuar
               </Text>
-              <Text style={styles.arrowRight}>→</Text>
+              <Text style={[
+                styles.arrowRight,
+                !tipo && styles.nextButtonTextDisabled
+              ]}>→</Text>
             </TouchableOpacity>
           </Animated.View>
           
@@ -182,20 +191,44 @@ export default function CadastroScreen() {
   );
 }
 
+// ─── PALETA PETRÓLEO + OLIVA ──────────────────────────────────────────────────
+// Petróleo:      #1B4D4D  Azul petróleo escuro — SABOR PRINCIPAL
+// Petróleo vivo: #2A7A7A  Petróleo mais claro — destaques vivos
+// Petróleo bg:   #E0EBEB  Petróleo diluído — fundos sutis
+// Oliva:         #5C6B2E  Verde oliva — tempero e detalhes
+// Oliva viva:    #7A8F3A  Oliva mais claro — acento secundário
+// Oliva bg:      #ECF0DC  Oliva diluído — seleção suave
+// Fundo:         #F7F5F0  Creme quente
+// Texto:         #1A1A1A  Quase preto
+// Subtexto:      #6B6B6B  Cinza médio
+// Borda:         #E0DDD6  Cinza quente
+// ───────────────────────────────────────────────────────────────────────────────
+
+const PETROLEO      = '#1B4D4D';
+const PETROLEO_VIVO = '#2A7A7A';
+const PETROLEO_BG   = '#E0EBEB';
+const OLIVA         = '#5C6B2E';
+const OLIVA_VIVA    = '#7A8F3A';
+const OLIVA_BG      = '#ECF0DC';
+const CREAM         = '#F7F5F0';
+const WHITE         = '#FFFFFF';
+const TEXT_DARK     = '#1A1A1A';
+const TEXT_MID      = '#6B6B6B';
+const BORDER        = '#E0DDD6';
+
 const styles = StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: '#fff0f5', // Lavender Blush - fundo rosa bem claro
+    backgroundColor: CREAM,
   },
   
-  // Progress bar
   progressBarContainer: {
-    height: 3,
-    backgroundColor: '#fce4ec', // Rosa bem claro
+    height: 4,
+    backgroundColor: BORDER,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#e91e63', // Pink 500
+    backgroundColor: PETROLEO, // ← petróleo na barra
   },
 
   content: { 
@@ -204,7 +237,6 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
 
-  // Header
   header: {
     flexDirection: 'row',
     alignItems: 'baseline',
@@ -213,7 +245,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: 48,
     fontWeight: '200',
-    color: '#e91e63', // Pink principal
+    color: PETROLEO, // ← petróleo no número
     letterSpacing: -2,
   },
   stepDivider: {
@@ -223,62 +255,61 @@ const styles = StyleSheet.create({
   },
   stepDividerText: {
     fontSize: 24,
-    color: '#ad1457', // Pink escuro
+    color: TEXT_MID,
     fontWeight: '300',
   },
   stepTotal: {
     fontSize: 20,
-    color: '#c2185b', // Pink médio
+    color: TEXT_MID,
     fontWeight: '400',
     marginLeft: 2,
   },
   stepLabel: {
-    fontSize: 14,
-    color: '#880e4f', // Pink mais escuro
+    fontSize: 13,
+    color: OLIVA, // ← oliva no label superior
     marginLeft: 'auto',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
+    fontWeight: '600',
   },
 
-  // Título
   titleSection: {
     marginBottom: 48,
   },
   title: {
-    fontSize: 32,
-    fontWeight: '600',
-    color: '#4a148c', // Roxo escuro para contraste
+    fontSize: 34,
+    fontWeight: '700',
+    color: TEXT_DARK,
     letterSpacing: -0.5,
   },
   titleAccent: {
-    fontSize: 32,
+    fontSize: 34,
     fontWeight: '300',
-    color: '#e91e63', // Pink principal
+    color: PETROLEO_VIVO, // ← petróleo vivo no destaque
     letterSpacing: -0.5,
   },
 
-  // Dropdown
   dropdownWrapper: {
     marginBottom: 'auto',
   },
   dropdown: {
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
+    backgroundColor: WHITE,
+    borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: '#f8bbd0', // Rosa claro
-    overflow: 'hidden',
-    shadowColor: '#e91e63',
+    borderColor: BORDER,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.07,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 3,
   },
   dropdownActive: {
-    borderColor: '#e91e63', // Pink principal
+    borderColor: PETROLEO, // ← petróleo quando aberto
+    borderWidth: 2,
   },
   dropdownSelected: {
-    backgroundColor: '#fff0f5', // Lavender blush
-    borderColor: '#c2185b',
+    borderColor: OLIVA, // ← oliva quando selecionado
+    borderWidth: 2,
   },
   dropdownContent: {
     flexDirection: 'row',
@@ -289,61 +320,63 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     fontSize: 16,
-    color: '#4a148c', // Roxo escuro
+    color: TEXT_DARK,
     fontWeight: '500',
   },
   dropdownPlaceholder: {
-    color: '#9e9e9e',
+    color: '#ABABAB',
     fontWeight: '400',
   },
   arrowContainer: {
     width: 32,
     height: 32,
-    borderRadius: 10,
-    backgroundColor: '#fce4ec', // Rosa claro
+    borderRadius: 8,
+    backgroundColor: PETROLEO_BG, // ← petróleo diluído na seta
     justifyContent: 'center',
     alignItems: 'center',
   },
   arrow: {
-    fontSize: 12,
-    color: '#e91e63', // Pink principal
+    fontSize: 11,
+    color: PETROLEO, // ← petróleo na setinha
   },
 
-  // Options
   optionsContainer: {
     marginTop: 8,
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#f8bbd0', // Rosa claro
+    backgroundColor: WHITE,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    borderColor: BORDER,
     overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowRadius: 14,
     elevation: 6,
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 18,
     borderBottomWidth: 1,
-    borderBottomColor: '#fce4ec',
+    borderBottomColor: '#F0EDE8',
   },
   optionFirst: {
     borderTopWidth: 0,
   },
   optionSelected: {
-    backgroundColor: 'rgba(233, 30, 99, 0.08)',
+    backgroundColor: OLIVA_BG, // ← oliva diluído na seleção
   },
   optionIcon: {
-    width: 44,
-    height: 44,
+    width: 46,
+    height: 46,
     borderRadius: 12,
-    backgroundColor: '#fce4ec', // Rosa claro
+    backgroundColor: '#F0EDE8',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
+  },
+  optionIconSelected: {
+    backgroundColor: PETROLEO_BG, // ← petróleo bg no ícone ativo
   },
   optionIconText: {
     fontSize: 20,
@@ -354,62 +387,64 @@ const styles = StyleSheet.create({
   optionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#4a148c', // Roxo escuro
-    marginBottom: 4,
+    color: TEXT_DARK,
+    marginBottom: 3,
   },
   optionTitleSelected: {
-    color: '#e91e63', // Pink principal
+    color: PETROLEO, // ← petróleo no título selecionado
   },
   optionDescription: {
     fontSize: 13,
-    color: '#9e9e9e',
+    color: TEXT_MID,
   },
   checkmark: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#e91e63', // Pink principal
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: PETROLEO, // ← petróleo no checkmark
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkmarkText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 14,
     fontWeight: '700',
   },
 
-  // Footer
   footer: {
     paddingBottom: 40,
   },
   nextButton: { 
-    backgroundColor: '#e91e63', // Pink 500 - botão principal
+    backgroundColor: PETROLEO, // ← petróleo no botão CTA (SABOR!)
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     paddingHorizontal: 32,
     borderRadius: 14,
-    shadowColor: '#e91e63',
-    shadowOffset: { width: 0, height: 8 },
+    shadowColor: PETROLEO,
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
-    shadowRadius: 16,
+    shadowRadius: 14,
     elevation: 8,
   },
   nextButtonDisabled: {
-    backgroundColor: '#f8bbd0', // Rosa claro desabilitado
+    backgroundColor: BORDER,
     shadowOpacity: 0,
     elevation: 0,
   },
   nextButtonText: { 
-    color: '#ffffff', 
+    color: WHITE, // branco puro sobre petróleo escuro
     fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
+  nextButtonTextDisabled: {
+    color: TEXT_MID,
+  },
   arrowRight: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 18,
     marginLeft: 8,
   },
@@ -417,6 +452,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 16,
     fontSize: 13,
-    color: '#ad1457', // Pink escuro
+    color: OLIVA_VIVA, // ← oliva viva no hint
+    fontWeight: '500',
   },
 });

@@ -15,6 +15,20 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '../services/api';
 
+// ─── PALETA PETRÓLEO + OLIVA ──────────────────────────────────────────────────
+const PETROLEO      = '#1B4D4D';
+const PETROLEO_VIVO = '#2A7A7A';
+const PETROLEO_BG   = '#E0EBEB';
+const OLIVA         = '#5C6B2E';
+const OLIVA_VIVA    = '#7A8F3A';
+const OLIVA_BG      = '#ECF0DC';
+const CREAM         = '#F7F5F0';
+const WHITE         = '#FFFFFF';
+const TEXT_DARK     = '#1A1A1A';
+const TEXT_MID      = '#6B6B6B';
+const BORDER        = '#E0DDD6';
+// ───────────────────────────────────────────────────────────────────────────────
+
 export default function CadastroPasso4() {
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -154,7 +168,7 @@ export default function CadastroPasso4() {
               {!documentoAprovado ? (
                 <>
                   <View style={styles.statusCirclePending}>
-                    <ActivityIndicator size="large" color="#e91e63" />
+                    <ActivityIndicator size="large" color={PETROLEO} />
                   </View>
                   <Text style={styles.waitingTitle}>Análise em andamento</Text>
                   <Text style={styles.waitingDescription}>
@@ -167,21 +181,6 @@ export default function CadastroPasso4() {
                     <Animated.View style={[styles.dot, styles.dot2]} />
                     <Animated.View style={[styles.dot, styles.dot3]} />
                   </View>
-                  
-                  {/* Verificação manual */}
-                  <TouchableOpacity 
-                    onPress={async () => {
-                      const { data } = await supabase
-                        .from('profissional')
-                        .select('status_aprovacao')
-                        .eq('id_profissional', params.id_profissional)
-                        .single();
-                      if (data?.status_aprovacao === 'aprovado') setDocumentoAprovado(true);
-                    }}
-                    style={styles.manualCheck}
-                  >
-                    <Text style={styles.manualCheckText}>Verificar status</Text>
-                  </TouchableOpacity>
                 </>
               ) : (
                 <>
@@ -296,7 +295,7 @@ export default function CadastroPasso4() {
               >
                 {isUploading ? (
                   <>
-                    <ActivityIndicator color="#fff" size="small" />
+                    <ActivityIndicator color={WHITE} size="small" />
                     <Text style={styles.sendButtonText}>Enviando...</Text>
                   </>
                 ) : (
@@ -331,17 +330,17 @@ export default function CadastroPasso4() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f5',
+    backgroundColor: CREAM,
   },
 
   // Progress bar
   progressBarContainer: {
-    height: 3,
-    backgroundColor: '#fce4ec',
+    height: 4,
+    backgroundColor: BORDER,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
   },
 
   scrollContent: {
@@ -363,7 +362,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: 48,
     fontWeight: '200',
-    color: '#e91e63',
+    color: PETROLEO,
     letterSpacing: -2,
   },
   stepDivider: {
@@ -373,20 +372,22 @@ const styles = StyleSheet.create({
   },
   stepDividerText: {
     fontSize: 24,
-    color: '#ad1457',
+    color: TEXT_MID,
     fontWeight: '300',
   },
   stepTotal: {
     fontSize: 20,
-    color: '#c2185b',
+    color: TEXT_MID,
+    fontWeight: '400',
     marginLeft: 2,
   },
   stepLabel: {
-    fontSize: 14,
-    color: '#880e4f',
+    fontSize: 13,
+    color: OLIVA,
     marginLeft: 'auto',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
+    fontWeight: '600',
   },
 
   // Title
@@ -396,13 +397,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
     letterSpacing: -0.5,
   },
   titleAccent: {
     fontSize: 28,
     fontWeight: '300',
-    color: '#e91e63',
+    color: PETROLEO_VIVO,
     letterSpacing: -0.5,
   },
 
@@ -412,23 +413,23 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 14,
-    color: '#880e4f',
+    color: OLIVA,
     fontWeight: '600',
     marginBottom: 12,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   uploadCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 24,
+    backgroundColor: WHITE,
+    borderRadius: 14,
     height: 280,
     overflow: 'hidden',
     borderWidth: 2,
-    borderColor: '#f8bbd0',
+    borderColor: BORDER,
     borderStyle: 'dashed',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.07,
     shadowRadius: 12,
     elevation: 4,
   },
@@ -441,8 +442,8 @@ const styles = StyleSheet.create({
   uploadIconCircle: {
     width: 80,
     height: 80,
-    borderRadius: 28,
-    backgroundColor: '#fce4ec',
+    borderRadius: 20,
+    backgroundColor: PETROLEO_BG,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -453,12 +454,12 @@ const styles = StyleSheet.create({
   uploadTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#e91e63',
+    color: PETROLEO,
     marginBottom: 8,
   },
   uploadSubtitle: {
     fontSize: 14,
-    color: '#9e9e9e',
+    color: TEXT_MID,
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -472,12 +473,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(74, 20, 140, 0.85)',
+    backgroundColor: 'rgba(27, 77, 77, 0.85)',
     paddingVertical: 16,
     alignItems: 'center',
   },
   changeText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -488,10 +489,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: 20,
     padding: 16,
-    backgroundColor: 'rgba(99, 102, 241, 0.06)',
+    backgroundColor: PETROLEO_BG,
     borderRadius: 14,
     borderLeftWidth: 3,
-    borderLeftColor: '#6366f1',
+    borderLeftColor: PETROLEO,
   },
   infoIcon: {
     fontSize: 18,
@@ -500,7 +501,7 @@ const styles = StyleSheet.create({
   infoText: {
     flex: 1,
     fontSize: 13,
-    color: '#6366f1',
+    color: PETROLEO,
     lineHeight: 18,
   },
 
@@ -510,35 +511,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sendButton: {
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     paddingHorizontal: 48,
-    borderRadius: 16,
-    shadowColor: '#e91e63',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
+    borderRadius: 14,
+    shadowColor: PETROLEO,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
     elevation: 8,
     minWidth: 280,
     gap: 8,
   },
   sendButtonDisabled: {
-    backgroundColor: '#f8bbd0',
+    backgroundColor: BORDER,
     shadowOpacity: 0,
     elevation: 0,
   },
   sendButtonText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   arrowRight: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 18,
   },
   backButton: {
@@ -547,21 +548,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   backText: {
-    color: '#ad1457',
+    color: PETROLEO_VIVO,
     fontSize: 14,
     fontWeight: '500',
   },
 
   // Waiting Card
   waitingCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 28,
+    backgroundColor: WHITE,
+    borderRadius: 14,
     padding: 32,
     alignItems: 'center',
     marginTop: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.07,
     shadowRadius: 16,
     elevation: 6,
   },
@@ -569,7 +570,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#fce4ec',
+    backgroundColor: PETROLEO_BG,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
@@ -578,25 +579,25 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#69f0ae',
+    backgroundColor: OLIVA_VIVA,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
   },
   approvedIcon: {
     fontSize: 48,
-    color: '#fff',
+    color: WHITE,
     fontWeight: '700',
   },
   waitingTitle: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
     marginBottom: 12,
   },
   waitingDescription: {
     fontSize: 14,
-    color: '#6b6b7b',
+    color: TEXT_MID,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 24,
@@ -604,35 +605,35 @@ const styles = StyleSheet.create({
   approvedTitle: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#00c853',
+    color: OLIVA,
     marginBottom: 12,
   },
   approvedDescription: {
     fontSize: 14,
-    color: '#6b6b7b',
+    color: TEXT_MID,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 24,
   },
   continueButton: {
-    backgroundColor: '#00c853',
+    backgroundColor: PETROLEO,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     paddingHorizontal: 40,
-    borderRadius: 16,
-    shadowColor: '#00c853',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
+    borderRadius: 14,
+    shadowColor: PETROLEO,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
     elevation: 8,
   },
   continueButtonText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   pulseDots: {
@@ -644,21 +645,9 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
   },
   dot1: { opacity: 0.3 },
   dot2: { opacity: 0.6 },
   dot3: { opacity: 1 },
-  manualCheck: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#f8bbd0',
-  },
-  manualCheckText: {
-    color: '#ad1457',
-    fontSize: 13,
-    fontWeight: '500',
-  },
 });

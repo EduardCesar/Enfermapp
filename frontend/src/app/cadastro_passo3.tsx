@@ -17,6 +17,20 @@ import { supabase } from '../services/api';
 
 const { height } = Dimensions.get('window');
 
+// ─── PALETA PETRÓLEO + OLIVA ──────────────────────────────────────────────────
+const PETROLEO      = '#1B4D4D';
+const PETROLEO_VIVO = '#2A7A7A';
+const PETROLEO_BG   = '#E0EBEB';
+const OLIVA         = '#5C6B2E';
+const OLIVA_VIVA    = '#7A8F3A';
+const OLIVA_BG      = '#ECF0DC';
+const CREAM         = '#F7F5F0';
+const WHITE         = '#FFFFFF';
+const TEXT_DARK     = '#1A1A1A';
+const TEXT_MID      = '#6B6B6B';
+const BORDER        = '#E0DDD6';
+// ───────────────────────────────────────────────────────────────────────────────
+
 export default function CadastroPasso3() {
   const router = useRouter();
   const { tipo_conta, nome_usuario, senha } = useLocalSearchParams();
@@ -124,7 +138,7 @@ export default function CadastroPasso3() {
           [{ text: "Começar", onPress: () => router.replace('/login') }]
         );
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       Alert.alert("Erro", err.message || "Erro de conexão.");
     } finally {
@@ -132,7 +146,7 @@ export default function CadastroPasso3() {
     }
   };
 
-  const selectCidade = (item: string) => {
+  const selectCidade = (item) => {
     setCidade(item);
     setShowDropdown(false);
   };
@@ -224,7 +238,7 @@ export default function CadastroPasso3() {
               disabled={!cidade || loading}
             >
               {loading ? (
-                <ActivityIndicator color="#fff" size="small" />
+                <ActivityIndicator color={WHITE} size="small" />
               ) : (
                 <>
                   <Text style={styles.actionButtonText}>
@@ -310,17 +324,17 @@ export default function CadastroPasso3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f5', // Lavender Blush
+    backgroundColor: CREAM,
   },
 
   // Progress bar
   progressBarContainer: {
-    height: 3,
-    backgroundColor: '#fce4ec',
+    height: 4,
+    backgroundColor: BORDER,
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
   },
 
   content: {
@@ -338,7 +352,7 @@ const styles = StyleSheet.create({
   stepNumber: {
     fontSize: 48,
     fontWeight: '200',
-    color: '#e91e63',
+    color: PETROLEO,
     letterSpacing: -2,
   },
   stepDivider: {
@@ -348,20 +362,22 @@ const styles = StyleSheet.create({
   },
   stepDividerText: {
     fontSize: 24,
-    color: '#ad1457',
+    color: TEXT_MID,
     fontWeight: '300',
   },
   stepTotal: {
     fontSize: 20,
-    color: '#c2185b',
+    color: TEXT_MID,
+    fontWeight: '400',
     marginLeft: 2,
   },
   stepLabel: {
-    fontSize: 14,
-    color: '#880e4f',
+    fontSize: 13,
+    color: OLIVA,
     marginLeft: 'auto',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
+    fontWeight: '600',
   },
 
   // Title
@@ -371,13 +387,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
     letterSpacing: -0.5,
   },
   titleAccent: {
     fontSize: 28,
     fontWeight: '300',
-    color: '#e91e63',
+    color: PETROLEO_VIVO,
     letterSpacing: -0.5,
   },
 
@@ -387,32 +403,32 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 14,
-    color: '#880e4f',
+    color: OLIVA,
     fontWeight: '600',
     marginBottom: 12,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   cityCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
+    backgroundColor: WHITE,
+    borderRadius: 14,
     padding: 20,
     borderWidth: 1.5,
-    borderColor: '#f8bbd0',
+    borderColor: BORDER,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.07,
     shadowRadius: 12,
     elevation: 4,
   },
   cityCardEmpty: {
     borderStyle: 'dashed',
-    borderColor: '#f8bbd0',
+    borderColor: BORDER,
     borderWidth: 2,
   },
   cityCardSelected: {
-    borderColor: '#e91e63',
-    backgroundColor: '#fff5f7',
+    borderColor: PETROLEO,
+    backgroundColor: PETROLEO_BG,
   },
   cityCardContent: {
     flexDirection: 'row',
@@ -421,14 +437,14 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 56,
     height: 56,
-    borderRadius: 18,
-    backgroundColor: '#fce4ec',
+    borderRadius: 12,
+    backgroundColor: PETROLEO_BG,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
   },
   iconCircleActive: {
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
   },
   iconText: {
     fontSize: 24,
@@ -439,31 +455,31 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
   },
   cityNamePlaceholder: {
-    color: '#9e9e9e',
+    color: '#ABABAB',
     fontWeight: '400',
   },
   cityState: {
     fontSize: 13,
-    color: '#ad1457',
+    color: TEXT_MID,
     marginTop: 4,
   },
   arrowContainer: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: '#fce4ec',
+    backgroundColor: PETROLEO_BG,
     justifyContent: 'center',
     alignItems: 'center',
   },
   arrowContainerActive: {
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
   },
   arrow: {
     fontSize: 22,
-    color: '#c2185b',
+    color: PETROLEO,
     fontWeight: '600',
   },
 
@@ -473,10 +489,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: 20,
     padding: 16,
-    backgroundColor: 'rgba(233, 30, 99, 0.06)',
-    borderRadius: 12,
+    backgroundColor: PETROLEO_BG,
+    borderRadius: 14,
     borderLeftWidth: 3,
-    borderLeftColor: '#e91e63',
+    borderLeftColor: PETROLEO,
   },
   hintIcon: {
     fontSize: 16,
@@ -485,7 +501,7 @@ const styles = StyleSheet.create({
   hintText: {
     flex: 1,
     fontSize: 13,
-    color: '#ad1457',
+    color: TEXT_MID,
     lineHeight: 18,
   },
 
@@ -496,34 +512,34 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   actionButton: {
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     paddingHorizontal: 48,
-    borderRadius: 16,
-    shadowColor: '#e91e63',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
+    borderRadius: 14,
+    shadowColor: PETROLEO,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
     elevation: 8,
     minWidth: 260,
   },
   actionButtonDisabled: {
-    backgroundColor: '#f8bbd0',
+    backgroundColor: BORDER,
     shadowOpacity: 0,
     elevation: 0,
   },
   actionButtonText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   arrowRight: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 18,
     marginLeft: 8,
   },
@@ -533,7 +549,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   backText: {
-    color: '#ad1457',
+    color: PETROLEO_VIVO,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -541,11 +557,11 @@ const styles = StyleSheet.create({
   // Modal
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(74, 20, 140, 0.4)',
+    backgroundColor: 'rgba(27, 77, 77, 0.4)',
     justifyContent: 'flex-end',
   },
   modalSheet: {
-    backgroundColor: '#ffffff',
+    backgroundColor: WHITE,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     paddingHorizontal: 24,
@@ -556,7 +572,7 @@ const styles = StyleSheet.create({
   modalHandle: {
     width: 36,
     height: 4,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: BORDER,
     borderRadius: 2,
     alignSelf: 'center',
     marginBottom: 20,
@@ -564,21 +580,21 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
     marginBottom: 20,
     textAlign: 'center',
   },
   modalOption: {
     paddingVertical: 16,
     paddingHorizontal: 16,
-    borderRadius: 16,
+    borderRadius: 14,
     marginBottom: 8,
     borderWidth: 1.5,
     borderColor: 'transparent',
   },
   modalOptionSelected: {
-    backgroundColor: '#fff5f7',
-    borderColor: '#e91e63',
+    backgroundColor: OLIVA_BG,
+    borderColor: PETROLEO,
   },
   modalOptionContent: {
     flexDirection: 'row',
@@ -594,37 +610,37 @@ const styles = StyleSheet.create({
   modalCityName: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#4a148c',
+    color: TEXT_DARK,
   },
   modalCityNameSelected: {
-    color: '#e91e63',
+    color: PETROLEO,
   },
   modalCityState: {
     fontSize: 13,
-    color: '#9e9e9e',
+    color: TEXT_MID,
     marginTop: 2,
   },
   checkmark: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#e91e63',
+    backgroundColor: PETROLEO,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkmarkText: {
-    color: '#ffffff',
+    color: WHITE,
     fontSize: 16,
     fontWeight: '700',
   },
   closeButton: {
     marginTop: 20,
     paddingVertical: 16,
-    borderRadius: 16,
-    backgroundColor: '#fce4ec',
+    borderRadius: 14,
+    backgroundColor: PETROLEO_BG,
   },
   closeText: {
-    color: '#c2185b',
+    color: PETROLEO,
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',

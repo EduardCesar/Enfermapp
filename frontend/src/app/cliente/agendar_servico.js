@@ -5,6 +5,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { supabase } from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Paleta de Cores Atualizada e Integrada
+const CREAM = '#FDFBF7';        // Fundo padrão
+const VERDE_VIVO = '#2E6F40';   // Detalhes em Oliva
+const PETROLEO = '#0F262E';     // Textos principais e cabeçalhos
+const TEXT_MID = '#6E828A';     // Subtítulos e labels secundárias
+const BORDER = '#E3E8E5';       // Bordas sutis
+const WHITE = '#FFFFFF';
+
+// Cores de Destaque Alternativas (Sem ser Verde ou Azul)
+const TERRACOTA = '#B85A3A';    // Substitui o Rosa antigo em botões e seleções
+const MOSTARDA = '#D99100';     // Substitui o Amarelo vivo na tela de sucesso por algo mais elegante
+
 export default function AgendarServico() {
   const router = useRouter();
   const { idProfissional, servicoId } = useLocalSearchParams();
@@ -20,16 +32,11 @@ export default function AgendarServico() {
 
   // Função para aplicar máscara de horário (HH:MM)
   const formatarHora = (text) => {
-    // Remove tudo que não for número
     const nums = text.replace(/[^\d]/g, '');
-    
     let formatted = nums;
     if (nums.length > 2) {
-      // Insere os dois pontos após o segundo dígito
       formatted = `${nums.slice(0, 2)}:${nums.slice(2, 4)}`;
     }
-    
-    // Limita a 5 caracteres (00:00)
     setForm({ ...form, hora: formatted.slice(0, 5) });
   };
 
@@ -65,24 +72,40 @@ export default function AgendarServico() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()}><Ionicons name="close-outline" size={35} color="red" /></TouchableOpacity>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="close-outline" size={32} color="#C94A4A" />
+          </TouchableOpacity>
           <Text style={styles.headerTitle}>Detalhes do Procedimento</Text>
         </View>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <Text style={styles.label}>Horário Desejado</Text>
           <TextInput 
             style={styles.input} 
             placeholder="Ex: 14:30" 
-            keyboardType="numeric" // Abre o teclado numérico
+            placeholderTextColor={TEXT_MID}
+            keyboardType="numeric"
             value={form.hora} 
-            onChangeText={formatarHora} // Chama a função da máscara
+            onChangeText={formatarHora}
           />
           
           <Text style={styles.label}>O que você precisa?</Text>
-          <TextInput style={[styles.input, { height: 80 }]} multiline placeholder="Descrição..." value={form.descricao} onChangeText={(t) => setForm({...form, descricao: t})}/>
+          <TextInput 
+            style={[styles.input, { height: 90, textAlignVertical: 'top' }]} 
+            multiline 
+            placeholder="Descreva detalhes do que precisa aqui..." 
+            placeholderTextColor={TEXT_MID}
+            value={form.descricao} 
+            onChangeText={(t) => setForm({...form, descricao: t})}
+          />
           
           <Text style={styles.label}>Endereço Completo</Text>
-          <TextInput style={styles.input} placeholder="Rua, número..." value={form.endereco} onChangeText={(t) => setForm({...form, endereco: t})}/>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Rua, número, bairro..." 
+            placeholderTextColor={TEXT_MID}
+            value={form.endereco} 
+            onChangeText={(t) => setForm({...form, endereco: t})}
+          />
           
           {/* SELEÇÃO DE PAGAMENTO */}
           <Text style={styles.label}>Forma de Pagamento</Text>
@@ -101,6 +124,7 @@ export default function AgendarServico() {
           
           <TouchableOpacity 
             style={[styles.mainButton, { marginTop: 30 }]} 
+            activeOpacity={0.8}
             onPress={() => {
               if(!form.hora || !form.endereco) return Alert.alert("Aviso", "Preencha horário e endereço!");
               if(form.hora.length < 5) return Alert.alert("Aviso", "Horário incompleto!");
@@ -119,7 +143,9 @@ export default function AgendarServico() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => setPasso(1)}><Ionicons name="arrow-back" size={30} color="black" /></TouchableOpacity>
+          <TouchableOpacity onPress={() => setPasso(1)}>
+            <Ionicons name="arrow-back" size={26} color={PETROLEO} />
+          </TouchableOpacity>
           <Text style={styles.headerTitle}>Confirme seus Dados</Text>
         </View>
         <View style={styles.content}>
@@ -127,11 +153,11 @@ export default function AgendarServico() {
             <Text style={styles.revisaoText}><Text style={styles.bold}>Horário:</Text> {form.hora}</Text>
             <Text style={styles.revisaoText}><Text style={styles.bold}>Endereço:</Text> {form.endereco}</Text>
             <Text style={styles.revisaoText}><Text style={styles.bold}>Pagamento:</Text> {form.pagamento}</Text>
-            <Text style={styles.revisaoText}><Text style={styles.bold}>Obs:</Text> {form.descricao}</Text>
+            <Text style={styles.revisaoText}><Text style={styles.bold}>Obs:</Text> {form.descricao || "Nenhuma observação adicionada."}</Text>
           </View>
 
-          <TouchableOpacity style={styles.mainButton} onPress={finalizarAgendamento}>
-            {loading ? <ActivityIndicator color="white" /> : <Text style={styles.mainButtonText}>CONFIRMAR E SOLICITAR</Text>}
+          <TouchableOpacity style={styles.mainButton} activeOpacity={0.8} onPress={finalizarAgendamento}>
+            {loading ? <ActivityIndicator color={WHITE} /> : <Text style={styles.mainButtonText}>CONFIRMAR E SOLICITAR</Text>}
           </TouchableOpacity>
         </View>
       </View>
@@ -140,44 +166,155 @@ export default function AgendarServico() {
 
   // --- PASSO 3: TELA DE ESPERA ---
   return (
-    <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-      <Ionicons name="time-outline" size={100} color="#FFD700" />
-      <Text style={[styles.titleSucesso, { color: '#FFD700' }]}>Solicitação Enviada!</Text>
+    <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 }]}>
+      <Ionicons name="time-outline" size={90} color={MOSTARDA} />
+      <Text style={styles.titleSucesso}>Solicitação Enviada!</Text>
       <Text style={styles.textSucesso}>
-        Sua solicitação foi enviada com sucesso. Por favor, aguarde enquanto o profissional analisa e confirma o atendimento.
+        Sua solicitação foi encaminhada com sucesso. Por favor, aguarde enquanto o profissional analisa e confirma o seu atendimento.
       </Text>
       
       <TouchableOpacity 
-        style={styles.btnAmarelo} 
+        style={styles.btnVoltar} 
+        activeOpacity={0.8}
         onPress={() => router.replace('/cliente/dashboard')}
       >
-        <Text style={styles.btnAmareloText}>VOLTAR AO INÍCIO</Text>
+        <Text style={styles.btnVoltarText}>VOLTAR AO INÍCIO</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#8C8C8C' },
-  header: { paddingTop: 50, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', backgroundColor: '#D9D9D9', paddingBottom: 15 },
-  headerTitle: { fontSize: 18, fontWeight: 'bold', marginLeft: 10 },
-  content: { padding: 20 },
-  label: { fontSize: 16, fontWeight: 'bold', marginBottom: 8, marginTop: 15 },
-  input: { backgroundColor: '#FFF', padding: 12, borderRadius: 5, fontSize: 16, color: '#000' },
-  
-  pagamentoContainer: { backgroundColor: '#D9D9D9', borderRadius: 5, padding: 10, marginTop: 5 },
-  radioOption: { flexDirection: 'row', alignItems: 'center', marginVertical: 8 },
-  radioCircle: { height: 22, width: 22, borderRadius: 11, borderWidth: 2, borderColor: '#000', marginRight: 10, justifyContent: 'center', alignItems: 'center' },
-  radioSelected: { backgroundColor: '#C5005E', borderColor: '#C5005E' },
-  radioText: { fontSize: 16, fontWeight: '500', color: '#000' },
-
-  revisaoCard: { backgroundColor: '#D9D9D9', padding: 20, borderRadius: 10, marginBottom: 30 },
-  revisaoText: { fontSize: 18, marginBottom: 10, color: '#000' },
-  bold: { fontWeight: 'bold' },
-  mainButton: { backgroundColor: '#C5005E', padding: 20, borderRadius: 10, alignItems: 'center' },
-  mainButtonText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
-  titleSucesso: { fontSize: 26, fontWeight: 'bold', marginTop: 20 },
-  textSucesso: { textAlign: 'center', fontSize: 18, paddingHorizontal: 30, marginTop: 15, color: 'white' },
-  btnAmarelo: { backgroundColor: '#FFD700', padding: 20, borderRadius: 10, marginTop: 40, width: '80%', alignItems: 'center' },
-  btnAmareloText: { color: 'black', fontSize: 18, fontWeight: 'bold' }
+  container: { 
+    flex: 1, 
+    backgroundColor: CREAM 
+  },
+  header: { 
+    paddingTop: 55, 
+    paddingHorizontal: 20, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: WHITE, 
+    paddingBottom: 18,
+    borderBottomWidth: 1,
+    borderColor: BORDER
+  },
+  headerTitle: { 
+    fontSize: 18, 
+    fontWeight: '700', 
+    marginLeft: 12,
+    color: PETROLEO 
+  },
+  content: { 
+    padding: 24 
+  },
+  label: { 
+    fontSize: 15, 
+    fontWeight: '700', 
+    color: PETROLEO,
+    marginBottom: 8, 
+    marginTop: 18 
+  },
+  input: { 
+    backgroundColor: WHITE, 
+    padding: 14, 
+    borderRadius: 12, 
+    fontSize: 16, 
+    color: PETROLEO,
+    borderWidth: 1,
+    borderColor: BORDER
+  },
+  pagamentoContainer: { 
+    backgroundColor: WHITE, 
+    borderRadius: 14, 
+    padding: 16, 
+    marginTop: 4,
+    borderWidth: 1,
+    borderColor: BORDER
+  },
+  radioOption: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginVertical: 10 
+  },
+  radioCircle: { 
+    height: 22, 
+    width: 22, 
+    borderRadius: 11, 
+    borderWidth: 2, 
+    borderColor: BORDER, 
+    marginRight: 12 
+  },
+  radioSelected: { 
+    backgroundColor: TERRACOTA, 
+    borderColor: TERRACOTA 
+  },
+  radioText: { 
+    fontSize: 16, 
+    fontWeight: '500', 
+    color: PETROLEO 
+  },
+  revisaoCard: { 
+    backgroundColor: WHITE, 
+    padding: 20, 
+    borderRadius: 16, 
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: BORDER
+  },
+  revisaoText: { 
+    fontSize: 16, 
+    marginBottom: 12, 
+    color: PETROLEO,
+    lineHeight: 22
+  },
+  bold: { 
+    fontWeight: '700',
+    color: TEXT_MID
+  },
+  mainButton: { 
+    backgroundColor: TERRACOTA, // Novo destaque terracota
+    padding: 16, 
+    borderRadius: 16, 
+    alignItems: 'center',
+    shadowColor: TERRACOTA,
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 3
+  },
+  mainButtonText: { 
+    color: WHITE, 
+    fontSize: 16, 
+    fontWeight: '700',
+    letterSpacing: 0.5
+  },
+  titleSucesso: { 
+    fontSize: 24, 
+    fontWeight: '700', 
+    marginTop: 20,
+    color: PETROLEO 
+  },
+  textSucesso: { 
+    textAlign: 'center', 
+    fontSize: 15, 
+    lineHeight: 22,
+    marginTop: 12, 
+    color: TEXT_MID,
+    paddingHorizontal: 16
+  },
+  btnVoltar: { 
+    backgroundColor: MOSTARDA, 
+    padding: 16, 
+    borderRadius: 16, 
+    marginTop: 35, 
+    width: '100%', 
+    alignItems: 'center' 
+  },
+  btnVoltarText: { 
+    color: WHITE, 
+    fontSize: 16, 
+    fontWeight: '700',
+    letterSpacing: 0.5
+  }
 });
